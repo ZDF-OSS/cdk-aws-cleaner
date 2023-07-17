@@ -104,18 +104,6 @@
       "type": "build"
     },
     {
-      "name": "@aws-cdk/aws-lambda-python-alpha",
-      "type": "bundled"
-    },
-    {
-      "name": "@types/aws-lambda",
-      "type": "bundled"
-    },
-    {
-      "name": "aws-sdk",
-      "type": "bundled"
-    },
-    {
       "name": "aws-cdk-lib",
       "version": "^2.84.0",
       "type": "peer"
