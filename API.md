@@ -37,6 +37,24 @@ npm install aws-cdk-cleaner
     });
 
 ```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name**                                                                              | **Type**                          | **Description**                   |
+| ------------------------------------------------------------------------------------- | --------------------------------- | --------------------------------- |
+| <code><a href="#cdk-aws-cleaner.IAwsCleanerProps.property.cleanup">cleanup</a></code> | <code>aws-cdk-lib.Duration</code> | When the Stack should be removed. |
+
+---
+
+##### `cleanup`<sup>Required</sup> <a name="cleanup" id="cdk-aws-cleaner.IAwsCleanerProps.property.cleanup"></a>
+
+```typescript
+public readonly cleanup: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+
+When the Stack should be removed.
 # API Reference <a name="API Reference" id="api-reference"></a>
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
