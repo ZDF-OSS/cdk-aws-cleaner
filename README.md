@@ -1,7 +1,10 @@
 ![npm](https://img.shields.io/npm/dw/cdk-aws-cleaner) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ZDF-OSS/cdk-aws-cleaner/main) ![GitHub issues](https://img.shields.io/github/issues/ZDF-OSS/cdk-aws-cleaner)
 
-# AWS cleaner cdk construct for Cloud Development Kit (AWS CDK)
+# AWS CDK Auto-Deletion Construct: Automate CloudFormation stack removal after a set time. 
 
+Simplifies cleanup, reduces costs, and promotes efficient resource management.
+
+**This is espacially useful, if you deploy a demo stack or an expirement. It will be removed automatically for you.**
 
 The AWS CDK Auto-Deletion Construct is a powerful infrastructure-as-code (IaC) tool that enables you to automatically remove an AWS CloudFormation stack after a specified period. Built on top of the AWS Cloud Development Kit (CDK), this construct simplifies the process of managing the lifecycle of your infrastructure resources.
 
@@ -55,3 +58,5 @@ public readonly cleanup: Duration;
 - *Type:* aws-cdk-lib.Duration
 
 When the Stack should be removed.
+
+For any further assistance or support, please don't hesitate to contact us at aws@zerodotfive.com. We are a German company based in Hamburg, specializing in AWS services and solutions.
