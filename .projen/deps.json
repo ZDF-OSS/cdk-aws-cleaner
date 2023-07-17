@@ -21,7 +21,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.1.0",
+      "version": "2.84.0",
       "type": "build"
     },
     {
@@ -68,6 +68,11 @@
       "type": "build"
     },
     {
+      "name": "jsii-rosetta",
+      "version": "~5.0.0",
+      "type": "build"
+    },
+    {
       "name": "jsii",
       "version": "~5.0.0",
       "type": "build"
@@ -99,8 +104,20 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/aws-lambda-python-alpha",
+      "type": "bundled"
+    },
+    {
+      "name": "@types/aws-lambda",
+      "type": "bundled"
+    },
+    {
+      "name": "aws-sdk",
+      "type": "bundled"
+    },
+    {
       "name": "aws-cdk-lib",
-      "version": "^2.1.0",
+      "version": "^2.84.0",
       "type": "peer"
     },
     {
