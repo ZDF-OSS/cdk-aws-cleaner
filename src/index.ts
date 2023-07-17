@@ -38,29 +38,31 @@ export class AwsCleaner extends Construct {
     );
 
     const cleanupLambda = new lambda.Function(this, 'cleanup-lambda-function', {
-      runtime: Runtime.PYTHON_3_8,
+      runtime: Runtime.PYTHON_3_9,
       handler: 'index.handler',
+      description: `Lambda that cleanups the stack ${stack.stackName} automatically.`,
+      role: cleanupRole,
       architecture: Architecture.ARM_64,
       environment: {
         STACK_NAME: stack.stackName,
       },
       code: lambda.Code.fromInline(`
-        import boto3
-        import os
+import boto3
+import os
 
-        STACK_NAME = os.getenv("STACK_NAME")
-        client = boto3.client("cloudformation")
-
-
-        def remove_stack(stack: str):
-            response = client.delete_stack(
-                StackName=stack
-            )
-            return response
+STACK_NAME = os.getenv("STACK_NAME")
+client = boto3.client("cloudformation")
 
 
-        def handler(event, context):
-            print(remove_stack(STACK_NAME))
+def remove_stack(stack: str):
+    response = client.delete_stack(
+        StackName=stack
+    )
+    return response
+
+
+def handler(event, context):
+    print(remove_stack(STACK_NAME))
       `),
     });
 
