@@ -1,4 +1,3 @@
-import { PythonFunction } from '@aws-cdk/aws-lambda-python-alpha';
 import * as cdk from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
@@ -37,27 +36,34 @@ export class AwsCleaner extends Construct {
         actions: ['cloudformation:DeleteStack'],
       }),
     );
-    const cleanupLambda = new PythonFunction(
-      this,
-      'cleanup-lambda',
-      {
-        entry: './src/lambda/',
-        runtime: new lambda.Runtime(
-          Runtime.PYTHON_3_10.name,
-          lambda.RuntimeFamily.PYTHON,
-        ),
-        role: cleanupRole,
-        description:
-            `Lambda that cleans up stack ${stack.stackName}, after a given period of time.`,
-        index: 'remover.py',
-        architecture: Architecture.ARM_64,
-        handler: 'handler',
-        environment: {
-          STACK_NAME: stack.stackName,
-        },
-        timeout: cdk.Duration.minutes(6),
+
+    const cleanupLambda = new lambda.Function(this, 'cleanup-lambda-function', {
+      runtime: Runtime.PYTHON_3_8,
+      handler: 'index.handler',
+      architecture: Architecture.ARM_64,
+      environment: {
+        STACK_NAME: stack.stackName,
       },
-    );
+      code: lambda.Code.fromInline(`
+        import boto3
+        import os
+
+        STACK_NAME = os.getenv("STACK_NAME")
+        client = boto3.client("cloudformation")
+
+
+        def remove_stack(stack: str):
+            response = client.delete_stack(
+                StackName=stack
+            )
+            return response
+
+
+        def handler(event, context):
+            print(remove_stack(STACK_NAME))
+      `),
+    });
+
     new Rule(this, 'stack-cleanup-rule', {
       description: `Schedule for Cleaning up the stack ${stack.stackName}.`,
       schedule: Schedule.rate(props.cleanup),
