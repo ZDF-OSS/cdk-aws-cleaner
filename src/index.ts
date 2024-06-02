@@ -38,7 +38,7 @@ export class AwsCleaner extends Construct {
     );
 
     const cleanupLambda = new lambda.Function(this, 'cleanup-lambda-function', {
-      runtime: Runtime.PYTHON_3_9,
+      runtime: Runtime.PYTHON_3_10,
       handler: 'index.handler',
       description: `Lambda that cleanups the stack ${stack.stackName} automatically.`,
       role: cleanupRole,
