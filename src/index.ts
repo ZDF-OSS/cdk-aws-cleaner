@@ -64,7 +64,29 @@ from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 
 STACK_NAME = os.getenv("STACK_NAME")
 client = boto3.client("cloudformation")
-snsTopic = ${notification_topic.topicArn}
+snsTopic = "${notification_topic.topicArn}"
+
+def get_account_id():
+    try:
+        # Create an STS client
+        sts_client = boto3.client('sts')
+        
+        # Get caller identity
+        response = sts_client.get_caller_identity()
+        
+        # Extract and return the account ID
+        account_id = response['Account']
+        return account_id
+    
+    except NoCredentialsError:
+        print("Error: AWS credentials not found.")
+        return None
+    except PartialCredentialsError:
+        print("Error: Incomplete AWS credentials.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 def publish_to_sns(topic_arn, message, subject):
     try:
@@ -96,7 +118,7 @@ def remove_stack(stack: str):
 
 def handler(event, context):
     print(remove_stack(STACK_NAME))
-    publish_to_sns(snsTopic, f"Stack {STACK_NAME} deletion triggered.", f"Stack deletion for {STACK_NAME}")
+    publish_to_sns(snsTopic, f"Stack {STACK_NAME} deletion triggered for account {get_account_id()}.", f"Stack deletion for {STACK_NAME} - {get_account_id()}")
       `),
     });
 
