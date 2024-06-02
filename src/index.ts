@@ -4,11 +4,15 @@ import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Architecture, Runtime } from 'aws-cdk-lib/aws-lambda';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Construct } from 'constructs';
 
 export interface IAwsCleanerProps {
   /** When the Stack should be removed. */
   cleanup: cdk.Duration;
+  /** E-Mail Notification for the removal event */
+  email: string;
 }
 export class AwsCleaner extends Construct {
 
@@ -16,6 +20,12 @@ export class AwsCleaner extends Construct {
 
     super(scope, id);
     const stack = cdk.Stack.of(this);
+
+    const notification_topic = new sns.Topic(this, 'cleanup-sns-topic', {
+    });
+
+    const emailSubscription = new subscriptions.EmailSubscription(props.email);
+    notification_topic.addSubscription(emailSubscription);
 
     const cleanupRole = new iam.Role(
       this,
@@ -30,6 +40,7 @@ export class AwsCleaner extends Construct {
         ],
       },
     );
+    notification_topic.grantPublish(cleanupRole);
     cleanupRole.addToPolicy(
       new iam.PolicyStatement({
         resources: [`arn:aws:cloudformation:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:stack/${stack.stackName}/*`],
@@ -49,10 +60,32 @@ export class AwsCleaner extends Construct {
       code: lambda.Code.fromInline(`
 import boto3
 import os
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 
 STACK_NAME = os.getenv("STACK_NAME")
 client = boto3.client("cloudformation")
+snsTopic = ${notification_topic.topicArn}
 
+def publish_to_sns(topic_arn, message, subject):
+    try:
+        # Create an SNS client
+        sns_client = boto3.client('sns')
+        
+        # Publish a message to the specified SNS topic
+        response = sns_client.publish(
+            TopicArn=topic_arn,
+            Message=message,
+            Subject=subject
+        )
+        
+        print(f"Message sent to topic {topic_arn}. Message ID: {response['MessageId']}")
+    
+    except NoCredentialsError:
+        print("Error: AWS credentials not found.")
+    except PartialCredentialsError:
+        print("Error: Incomplete AWS credentials.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def remove_stack(stack: str):
     response = client.delete_stack(
@@ -63,6 +96,7 @@ def remove_stack(stack: str):
 
 def handler(event, context):
     print(remove_stack(STACK_NAME))
+    publish_to_sns(snsTopic, f"Stack {STACK_NAME} deletion triggered.", f"Stack deletion for {STACK_NAME}")
       `),
     });
 
@@ -71,5 +105,7 @@ def handler(event, context):
       schedule: Schedule.rate(props.cleanup),
       targets: [new LambdaFunction(cleanupLambda)],
     });
+
+
   }
 }

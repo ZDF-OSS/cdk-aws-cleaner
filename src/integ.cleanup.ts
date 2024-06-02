@@ -11,6 +11,7 @@ export class CleanupStacks extends cdk.Stack {
 
     new AwsCleaner(this, 'aws-cleaner-test', {
       cleanup: cdk.Duration.minutes(1),
+      email: 'aws@zerodotfive.com',
     });
   }
 }
