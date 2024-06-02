@@ -18,6 +18,8 @@ By leveraging the AWS CDK Auto-Deletion Construct, you can ensure the efficient 
 
 **Security and Control**: The Auto-Deletion Construct follows AWS best practices for security and permissions. This helps prevent accidental or unauthorized deletions.
 
+**Notifcation**: You are now informed via mail, when the remval of the stack is triggered.
+
 The AWS CDK Auto-Deletion Construct empowers developers and DevOps teams to effectively manage their AWS infrastructure by automating the removal of unused resources. With its simplicity, flexibility, and integration capabilities, this construct streamlines the cleanup process and optimizes resource utilization, ultimately contributing to a more cost-efficient and organized AWS environment.
 
 ## TL;TR;
@@ -74,10 +76,10 @@ import { AwsCleaner } from 'cdk-aws-cleaner'
 new AwsCleaner(scope: Construct, id: string, props: IAwsCleanerProps)
 ```
 
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-aws-cleaner.AwsCleaner.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#cdk-aws-cleaner.AwsCleaner.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| **Name**                                                                                 | **Type**                                                                      | **Description**   |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------- |
+| <code><a href="#cdk-aws-cleaner.AwsCleaner.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code>                                             | *No description.* |
+| <code><a href="#cdk-aws-cleaner.AwsCleaner.Initializer.parameter.id">id</a></code>       | <code>string</code>                                                           | *No description.* |
 | <code><a href="#cdk-aws-cleaner.AwsCleaner.Initializer.parameter.props">props</a></code> | <code><a href="#cdk-aws-cleaner.IAwsCleanerProps">IAwsCleanerProps</a></code> | *No description.* |
 
 ---
@@ -102,8 +104,8 @@ new AwsCleaner(scope: Construct, id: string, props: IAwsCleanerProps)
 
 #### Methods <a name="Methods" id="Methods"></a>
 
-| **Name** | **Description** |
-| --- | --- |
+| **Name**                                                                 | **Description**                                    |
+| ------------------------------------------------------------------------ | -------------------------------------------------- |
 | <code><a href="#cdk-aws-cleaner.AwsCleaner.toString">toString</a></code> | Returns a string representation of this construct. |
 
 ---
@@ -118,8 +120,8 @@ Returns a string representation of this construct.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
-| **Name** | **Description** |
-| --- | --- |
+| **Name**                                                                       | **Description**               |
+| ------------------------------------------------------------------------------ | ----------------------------- |
 | <code><a href="#cdk-aws-cleaner.AwsCleaner.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
@@ -144,9 +146,9 @@ Any object.
 
 #### Properties <a name="Properties" id="Properties"></a>
 
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-aws-cleaner.AwsCleaner.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| **Name**                                                                  | **Type**                     | **Description** |
+| ------------------------------------------------------------------------- | ---------------------------- | --------------- |
+| <code><a href="#cdk-aws-cleaner.AwsCleaner.property.node">node</a></code> | <code>constructs.Node</code> | The tree node.  |
 
 ---
 
@@ -174,9 +176,10 @@ The tree node.
 
 #### Properties <a name="Properties" id="Properties"></a>
 
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-aws-cleaner.IAwsCleanerProps.property.cleanup">cleanup</a></code> | <code>aws-cdk-lib.Duration</code> | When the Stack should be removed. |
+| **Name**                                                                              | **Type**                          | **Description**                            |
+| ------------------------------------------------------------------------------------- | --------------------------------- | ------------------------------------------ |
+| <code><a href="#cdk-aws-cleaner.IAwsCleanerProps.property.cleanup">cleanup</a></code> | <code>aws-cdk-lib.Duration</code> | When the Stack should be removed.          |
+| <code><a href="#cdk-aws-cleaner.IAwsCleanerProps.property.email">email</a></code>     | <code>string</code>               | E-Mail Notification for the removal event. |
 
 ---
 
@@ -189,6 +192,18 @@ public readonly cleanup: Duration;
 - *Type:* aws-cdk-lib.Duration
 
 When the Stack should be removed.
+
+---
+
+##### `email`<sup>Required</sup> <a name="email" id="cdk-aws-cleaner.IAwsCleanerProps.property.email"></a>
+
+```typescript
+public readonly email: string;
+```
+
+- *Type:* string
+
+E-Mail Notification for the removal event.
 
 ---
 

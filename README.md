@@ -18,6 +18,8 @@ By leveraging the AWS CDK Auto-Deletion Construct, you can ensure the efficient 
 
 **Security and Control**: The Auto-Deletion Construct follows AWS best practices for security and permissions. This helps prevent accidental or unauthorized deletions.
 
+**Notifcation**: You are now informed via mail, when the remval of the stack is triggered.
+
 The AWS CDK Auto-Deletion Construct empowers developers and DevOps teams to effectively manage their AWS infrastructure by automating the removal of unused resources. With its simplicity, flexibility, and integration capabilities, this construct streamlines the cleanup process and optimizes resource utilization, ultimately contributing to a more cost-efficient and organized AWS environment.
 
 ## TL;TR;
@@ -37,6 +39,7 @@ npm install aws-cdk-cleaner
 ```ts
     new AwsCleaner(this, 'aws-cleaner', {
       cleanup: cdk.Duration.minutes(60),
+      email: "aws@zerodotfive.com"
     });
 
 ```

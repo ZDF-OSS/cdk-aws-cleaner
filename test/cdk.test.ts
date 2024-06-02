@@ -6,6 +6,7 @@ const mockApp = new App();
 const stack = new Stack(mockApp);
 new AwsCleaner(stack, 'cleaner', {
   cleanup: Duration.minutes(5),
+  email: 'aws@zerodotfive.com',
 });
 
 const template = Template.fromStack(stack);
