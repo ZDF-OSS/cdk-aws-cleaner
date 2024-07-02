@@ -27,9 +27,9 @@ The AWS CDK Auto-Deletion Construct empowers developers and DevOps teams to effe
 Use our construct by installing the module and using our construct in your code:
 
 ```sh
-npm install -g aws-cdk
-npm install aws-cdk-lib 
-npm install aws-cdk-cleaner
+npm i -g aws-cdk
+npm i aws-cdk-lib 
+npm i cdk-aws-cleaner
 ```
 
 ```ts
