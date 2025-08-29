@@ -131,7 +131,7 @@ When the Stack should be removed.
 
 ---
 
-##### `email`<sup>Required</sup> <a name="email" id="cdk-aws-cleaner.IAwsCleanerProps.property.email"></a>
+##### `email`<sup>Optional</sup> <a name="email" id="cdk-aws-cleaner.IAwsCleanerProps.property.email"></a>
 
 ```typescript
 public readonly email: string;
