@@ -12,7 +12,7 @@ export interface IAwsCleanerProps {
   /** When the Stack should be removed. */
   cleanup: cdk.Duration;
   /** E-Mail Notification for the removal event */
-  email: string;
+  email?: string;
 }
 export class AwsCleaner extends Construct {
 
@@ -24,8 +24,10 @@ export class AwsCleaner extends Construct {
     const notification_topic = new sns.Topic(this, 'cleanup-sns-topic', {
     });
 
-    const emailSubscription = new subscriptions.EmailSubscription(props.email);
-    notification_topic.addSubscription(emailSubscription);
+    if (props.email) {
+      const emailSubscription = new subscriptions.EmailSubscription(props.email);
+      notification_topic.addSubscription(emailSubscription);
+    }
 
     const cleanupRole = new iam.Role(
       this,
@@ -56,6 +58,7 @@ export class AwsCleaner extends Construct {
       architecture: Architecture.ARM_64,
       environment: {
         STACK_NAME: stack.stackName,
+        ENABLED_SNS_NOTIF: props.email ?? '',
       },
       code: lambda.Code.fromInline(`
 import boto3
@@ -64,7 +67,8 @@ from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 
 STACK_NAME = os.getenv("STACK_NAME")
 client = boto3.client("cloudformation")
-snsTopic = "${notification_topic.topicArn}"
+if ENABLED_SNS_NOTIF:
+    snsTopic = "${notification_topic.topicArn}"
 
 def get_account_id():
     try:
@@ -118,7 +122,8 @@ def remove_stack(stack: str):
 
 def handler(event, context):
     print(remove_stack(STACK_NAME))
-    publish_to_sns(snsTopic, f"Stack {STACK_NAME} deletion triggered for account {get_account_id()}.", f"Stack deletion for {STACK_NAME} - {get_account_id()}")
+    if ENABLED_SNS_NOTIF:
+        publish_to_sns(snsTopic, f"Stack {STACK_NAME} deletion triggered for account {get_account_id()}.", f"Stack deletion for {STACK_NAME} - {get_account_id()}")
       `),
     });
 
