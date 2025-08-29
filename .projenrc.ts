@@ -2,7 +2,7 @@ import { awscdk } from 'projen';
 
 const PROJECT_NAME = 'cdk-aws-cleaner';
 const PROJECT_DESCRIPTION =
-  'The construct cleans up the stack it is integrated with after a defined time period has passed.';
+  'The construct cleans up the stack it is used in and after a defined time period has passed.';
 
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'ZeroDotFive',
@@ -17,9 +17,17 @@ const project = new awscdk.AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/ZDF-OSS/cdk-aws-cleaner.git',
   homepage: 'https://zerodotfive.com',
   description: PROJECT_DESCRIPTION,
-  keywords: ['aws', 'cdk', 'awscdk', 'aws-cdk', 'cleanup', 'cost', 'stack', 'stack-remover', 'cloudformation'],
-  gitignore: [
-    'cdk.out/',
+  keywords: [
+    'aws',
+    'cdk',
+    'awscdk',
+    'aws-cdk',
+    'cleanup',
+    'cost',
+    'stack',
+    'stack-remover',
+    'cloudformation',
   ],
+  gitignore: ['cdk.out/'],
 });
 project.synth();

@@ -1,6 +1,6 @@
 {
   "name": "cdk-aws-cleaner",
-  "description": "The construct cleans up the stack it is integrated with after a defined time period has passed.",
+  "description": "The construct cleans up the stack it is used in and after a defined time period has passed.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ZDF-OSS/cdk-aws-cleaner.git"
